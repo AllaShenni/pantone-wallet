@@ -1,0 +1,17 @@
+{
+  "name": "Pantone Wallet",
+  "short_name": "Wallet",
+  "description": "Premium Currency Converter in Pantone Style",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#A47864",
+  "theme_color": "#A47864",
+  "icons": [
+    {
+      "src": "./icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

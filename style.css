@@ -1,0 +1,520 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Marck+Script&display=swap');
+
+:root {
+    --pantone-current-cover: #A47864; /* Mocha Mousse 2025 */
+    --pantone-current-body: #F0F0F0;  /* Cloud Dancer 2026 */
+    
+    --wallet-dark-border: rgba(0,0,0,0.2);
+    --gold-light: #fff3a1;
+    --gold-mid: #ffd700;
+    --gold-dark: #b8860b;
+    
+    --wallet-width: 340px;
+    --wallet-height: 520px;
+    --slide-width: 300px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Cinzel', serif;
+    background: radial-gradient(circle at center, #2c2c2c 0%, #000 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Стилизация шрифта для всех заголовков и текстов */
+h1, h2, .section-label, .tab, .rate-info, .developer-tag, input, select {
+    font-family: 'Cinzel', serif !important;
+}
+
+/* Кнопка закрытия для безрамочного окна */
+.close-app-btn {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    width: 20px;
+    height: 20px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 50%;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    cursor: pointer;
+    z-index: 100;
+    opacity: 0.5;
+    transition: opacity 0.3s;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.close-app-btn:hover {
+    opacity: 1;
+    background: #ff4444;
+}
+
+/* Кнопка "Скачать на десктоп" (PWA Install) */
+.install-banner {
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+}
+
+.install-button {
+    background: linear-gradient(135deg, var(--gold-light), var(--gold-mid), var(--gold-dark));
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-family: 'Cinzel', serif;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    white-space: nowrap;
+    transition: transform 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.install-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+.install-button:hover {
+    transform: scale(1.05);
+}
+
+.container {
+    perspective: 2000px;
+    position: relative;
+}
+
+.wallet {
+    width: var(--wallet-width);
+    height: var(--wallet-height);
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    isolation: isolate;
+}
+
+.wallet.open {
+    transform: translateX(150px); /* Сдвигаем ковер вправо, чтобы карточки были видны слева */
+}
+
+/* Улучшаем прозрачность в режиме приложения */
+@media screen and (max-width: 850px) {
+    body {
+        background: transparent !important;
+    }
+}
+
+/* Лицевая сторона - Крышка */
+.wallet-cover-hinge {
+    width: 100%;
+    height: 100%;
+    background-color: var(--pantone-current-cover); /* Динамический цвет кавера */
+    border: 2px solid var(--wallet-dark-border);
+    border-radius: 15px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 5px 0 15px rgba(0,0,0,0.3), 0 30px 60px rgba(0,0,0,0.8);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 50;
+}
+
+/* Финальная иконка валют (Белый круг с символами по фото) */
+.rbc-icon-circle {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    z-index: 20;
+    transition: transform 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rbc-icon-circle:hover {
+    transform: scale(1.1);
+}
+
+.circle-border {
+    width: 54px;
+    height: 54px;
+    border: 3px solid rgba(255, 255, 255, 0.9); /* Белый круг по фото */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent; /* Полностью прозрачный фон внутри круга */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.icon-grid-white {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    color: rgba(255, 255, 255, 0.9); /* Белые символы по фото */
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.icon-grid-white span {
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+/* Золотые слитки (CSS реалистичные) */
+.gold-bars-stack {
+    position: relative;
+    width: 150px;
+    height: 100px;
+    margin-bottom: 20px;
+    transform: translateY(-10px);
+}
+
+.gold-bar {
+    position: absolute;
+    width: 100px;
+    height: 35px;
+    background: linear-gradient(135deg, var(--gold-light), var(--gold-mid), var(--gold-dark));
+    border-radius: 2px;
+    box-shadow:
+        inset 0 1px 2px rgba(255,255,255,0.8),
+        inset 0 -1px 2px rgba(0,0,0,0.5),
+        2px 5px 10px rgba(0,0,0,0.4);
+    overflow: hidden;
+}
+
+.gold-bar::before {
+    content: '999.9';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 8px;
+    font-weight: bold;
+    color: rgba(0,0,0,0.2);
+    letter-spacing: 1px;
+}
+
+.bar-1 { bottom: 10px; left: 10px; transform: rotate(-5deg); z-index: 1; }
+.bar-2 { bottom: 15px; left: 45px; transform: rotate(5deg); z-index: 2; }
+.bar-3 { bottom: 40px; left: 25px; transform: rotate(0deg); z-index: 3; }
+
+.wallet-title {
+    font-family: 'Cinzel', serif !important;
+    font-size: 1.6rem;
+    color: var(--pantone-text-color-cover);
+    margin: 10px 0;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    text-align: center;
+    width: 100%;
+    text-transform: uppercase;
+    transition: transform 0.3s ease;
+    display: block;
+}
+
+.wallet-title:hover {
+    transform: scale(1.05);
+}
+
+/* Стилизация банковских карт */
+.converter-section {
+    background-color: var(--pantone-current-body);
+    border-radius: 12px 0 0 12px; /* Скругляем ТОЛЬКО ЛЕВЫЕ углы каждой карты */
+    padding: 15px 15px 35px 15px; 
+    box-shadow: -4px 4px 10px rgba(0,0,0,0.15); /* Тень смещена влево */
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+    position: relative;
+    border: 1px solid rgba(255,255,255,0.4);
+    border-right: none; /* Убираем правую границу для бесшовного входа в кошелек */
+    box-sizing: border-box;
+}
+
+/* Иконка обмена ВНИЗУ верхней карты по центру */
+.swap-icon-vertical {
+    position: absolute;
+    bottom: 5px; /* Поднял выше, теперь она не выступает за край */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 40px;
+    background: transparent; /* Убрал золотой фон, как на новом фото */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 20;
+    transition: transform 0.4s ease;
+}
+
+.swap-icon-vertical::after {
+    content: '⟳';
+    color: var(--gold-mid);
+    font-size: 32px;
+    font-weight: 300;
+    text-shadow: 0 2px 3px rgba(0,0,0,0.4);
+}
+
+.swap-icon-vertical:hover {
+    transform: translateX(-50%) rotate(180deg);
+}
+
+/* Футер внутри нижней карты для никнейма */
+.footer-card {
+    position: absolute;
+    bottom: 8px; /* Выровнял точно по центру нижней части */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    text-align: center;
+}
+
+.dev-nickname {
+    font-family: 'Marck Script', cursive !important;
+    color: var(--gold-mid);
+    text-decoration: none;
+    font-size: 1.3rem;
+    transition: transform 0.3s ease;
+    display: inline-block;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+.dev-nickname:hover {
+    transform: scale(1.1);
+    color: var(--gold-light);
+}
+
+/* Белое поле ввода */
+.input-container {
+    border: 2px solid #f0f0f0;
+    padding: 10px;
+    border-radius: 8px;
+    background: #fafafa;
+}
+
+/* Внутренняя часть (Тело кошелька) */
+.wallet-body {
+    width: var(--slide-width);
+    height: 94%;
+    background-color: transparent;
+    border-radius: 15px 0 0 15px;
+    position: absolute;
+    top: 3%;
+    left: 0;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0 10px 10px;
+    box-sizing: border-box;
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                visibility 0s 0.8s;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(0);
+    gap: 6px;
+    clip-path: inset(0);
+}
+
+.wallet.open .wallet-body {
+    transform: translateX(-100%);
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                visibility 0s 0s;
+}
+
+.converter-wrapper.vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+}
+
+.section-label {
+    font-size: 13px;
+    color: #777;
+    font-weight: 600;
+}
+
+.currency-tabs {
+    display: flex;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.tab {
+    flex: 1;
+    padding: 6px 8px;
+    border: none;
+    background: #fcfcfc;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 700;
+    color: #444;
+    transition: all 0.3s;
+    border-right: 1px solid #eee;
+}
+
+.tab:last-child {
+    border-right: none;
+}
+
+.tab.active {
+    /* Background set by JS */
+    color: #fff;
+}
+
+.tab-more {
+    flex: 1;
+    min-width: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: #fcfcfc;
+    padding: 0 4px;
+    border-right: none;
+}
+
+.tab-more.dynamic-slot span {
+    font-size: 11px;
+    font-weight: 700;
+    color: #444;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.tab-more select {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.tab-more::after {
+    content: '▼';
+    font-size: 7px;
+    color: var(--gold-mid);
+    margin-left: 4px;
+    font-weight: bold;
+    pointer-events: none;
+    transition: color 0.3s ease;
+}
+
+.tab-more:hover::after {
+    color: var(--gold-mid); /* Золотая при наведении */
+}
+
+.input-container {
+    border: 2px solid #f0f0f0;
+    padding: 10px;
+    border-radius: 8px;
+    background: #fafafa;
+    position: relative;
+}
+
+.input-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.input-container input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 28px;
+    font-weight: 800;
+    outline: none;
+    color: #222;
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+    margin: 0;
+}
+
+/* Скрываем системные стрелки */
+.input-container input::-webkit-outer-spin-button,
+.input-container input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0 !important;
+}
+.input-container input[type=number] {
+    -moz-appearance: textfield !important;
+}
+
+.rate-info {
+    margin-top: 5px;
+    font-size: 11px;
+    color: #aaa;
+}
+
+
+
+/* Иконка бинокля для перехода на РБК */
+.rbc-link-icon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 28px;
+    cursor: pointer;
+    z-index: 20;
+    transition: transform 0.3s;
+}
+
+.rbc-link-icon:hover {
+    transform: scale(1.2);
+}
+
+.footer-inner {
+    margin-top: 10px;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.developer-link {
+    font-size: 14px; /* Уменьшил шрифт */
+    color: var(--gold-mid);
+    text-decoration: none;
+    font-weight: bold;
+    background: linear-gradient(135deg, var(--gold-light), var(--gold-mid), var(--gold-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+    display: inline-block;
+}
