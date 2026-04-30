@@ -12,6 +12,26 @@
     --wallet-width: 340px;
     --wallet-height: 520px;
     --slide-width: 300px;
+    --wallet-open-shift: 150px;
+}
+
+/* Адаптация под Telegram Mini App и маленькие экраны телефонов */
+@media screen and (max-width: 500px) {
+    :root {
+        --wallet-width: 260px;
+        --wallet-height: 400px;
+        --slide-width: 230px;
+        --wallet-open-shift: 115px;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    :root {
+        --wallet-width: 220px;
+        --wallet-height: 340px;
+        --slide-width: 195px;
+        --wallet-open-shift: 95px;
+    }
 }
 
 body {
@@ -108,7 +128,7 @@ h1, h2, .section-label, .tab, .rate-info, .developer-tag, input, select {
 }
 
 .wallet.open {
-    transform: translateX(150px); /* Сдвигаем ковер вправо, чтобы карточки были видны слева */
+    transform: translateX(var(--wallet-open-shift)); /* Сдвигаем ковер вправо, чтобы карточки были видны слева */
 }
 
 /* Лицевая сторона - Крышка */
