@@ -18,27 +18,14 @@
        Адаптация под мобильные через transform: scale ниже. */
 }
 
-/* Адаптация под Telegram Mini App и маленькие экраны телефонов */
-/* Используем масштабирование всего макета вместо изменения переменных —
-   это сохраняет геометрию и пропорции, и гарантирует что раскрытая
-   структура (конвертер слева + обложка справа) полностью помещается */
-@media screen and (max-width: 500px) {
-    body {
-        transform: scale(0.72);
-        transform-origin: center center;
-    }
-}
-
-@media screen and (max-width: 400px) {
-    body {
-        transform: scale(0.62);
-    }
-}
-
-@media screen and (max-width: 340px) {
-    body {
-        transform: scale(0.52);
-    }
+/* Контейнер с плавным масштабированием через JS-переменную --fit-scale.
+   На больших экранах --fit-scale = 1 (без масштаба).
+   На узких экранах JS вычисляет минимальный scale так,
+   чтобы вся раскрытая структура помещалась в окно. */
+.container {
+    transform: scale(var(--fit-scale, 1));
+    transform-origin: center center;
+    transition: transform 0.2s ease;
 }
 
 body {

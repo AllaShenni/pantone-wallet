@@ -261,3 +261,19 @@ if (window.Telegram && window.Telegram.WebApp) {
     tg.ready();
     tg.expand();
 }
+
+// Плавное масштабирование под размер окна (для Telegram Mini App и узких окон)
+function fitToViewport() {
+    const targetWidth = 510;   // ширина раскрытой структуры + отступы
+    const targetHeight = 560;  // высота карточки + отступы
+    const scaleX = window.innerWidth / targetWidth;
+    const scaleY = window.innerHeight / targetHeight;
+    const scale = Math.min(scaleX, scaleY, 1);
+    document.documentElement.style.setProperty('--fit-scale', scale.toFixed(3));
+}
+
+window.addEventListener('load', fitToViewport);
+window.addEventListener('resize', fitToViewport);
+if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.onEvent) {
+    window.Telegram.WebApp.onEvent('viewportChanged', fitToViewport);
+}
