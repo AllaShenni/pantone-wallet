@@ -111,13 +111,6 @@ h1, h2, .section-label, .tab, .rate-info, .developer-tag, input, select {
     transform: translateX(150px); /* Сдвигаем ковер вправо, чтобы карточки были видны слева */
 }
 
-/* Улучшаем прозрачность в режиме приложения */
-@media screen and (max-width: 850px) {
-    body {
-        background: transparent !important;
-    }
-}
-
 /* Лицевая сторона - Крышка */
 .wallet-cover-hinge {
     width: 100%;

@@ -1,0 +1,15 @@
+{
+  "name": "pantone-wallet",
+  "version": "1.0.0",
+  "description": "Premium Pantone Currency Converter",
+  "main": "main.js",
+  "author": "AllaShenni",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-packager . PantoneWallet --platform=win32 --arch=x64 --icon=icons/wallet.ico --out=dist --overwrite --app-version=1.0.0 --win32metadata.ProductName=\"Pantone Wallet\" --win32metadata.CompanyName=\"AllaShenni\" --win32metadata.FileDescription=\"Premium Currency Converter\""
+  },
+  "devDependencies": {
+    "@electron/packager": "^20.0.0",
+    "electron": "^28.0.0"
+  }
+}
