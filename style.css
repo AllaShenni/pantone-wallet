@@ -13,24 +13,31 @@
     --wallet-height: 520px;
     --slide-width: 300px;
     --wallet-open-shift: 150px;
+
+    /* Размеры карточки и сдвига при раскрытии — фиксированные.
+       Адаптация под мобильные через transform: scale ниже. */
 }
 
 /* Адаптация под Telegram Mini App и маленькие экраны телефонов */
+/* Используем масштабирование всего макета вместо изменения переменных —
+   это сохраняет геометрию и пропорции, и гарантирует что раскрытая
+   структура (конвертер слева + обложка справа) полностью помещается */
 @media screen and (max-width: 500px) {
-    :root {
-        --wallet-width: 260px;
-        --wallet-height: 400px;
-        --slide-width: 230px;
-        --wallet-open-shift: 115px;
+    body {
+        transform: scale(0.72);
+        transform-origin: center center;
     }
 }
 
-@media screen and (max-width: 360px) {
-    :root {
-        --wallet-width: 220px;
-        --wallet-height: 340px;
-        --slide-width: 195px;
-        --wallet-open-shift: 95px;
+@media screen and (max-width: 400px) {
+    body {
+        transform: scale(0.62);
+    }
+}
+
+@media screen and (max-width: 340px) {
+    body {
+        transform: scale(0.52);
     }
 }
 
