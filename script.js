@@ -313,11 +313,13 @@ document.addEventListener('touchmove', (e) => {
     const t = e.touches[0];
     const dx = t.clientX - panStartX;
     const dy = t.clientY - panStartY;
-    // Считаем жест горизонтальным, только если по X движемся больше чем по Y
-    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 10) {
-        panOffsetX = panStartOffset + dx;
-        applyTransform();
-    }
+    // Жест считаем горизонтальным только если по X движемся минимум в 2 раза больше чем по Y
+    // Иначе игнорим — пусть будет вертикальный скролл / клик
+    if (Math.abs(dx) < 10 || Math.abs(dx) < Math.abs(dy) * 2) return;
+    // Ограничиваем диапазон сдвига шириной экрана, чтобы кошелек не уезжал за пределы
+    const maxOffset = window.innerWidth * 0.5;
+    panOffsetX = Math.max(-maxOffset, Math.min(maxOffset, panStartOffset + dx));
+    applyTransform();
 }, { passive: true });
 
 document.addEventListener('touchend', () => {
