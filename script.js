@@ -262,19 +262,28 @@ if (window.Telegram && window.Telegram.WebApp) {
     tg.expand();
 }
 
+// Текущий сдвиг контейнера по X от свайпа пальцем (для просмотра обрезанной части)
+let panOffsetX = 0;
+let currentScale = 1;
+
+function applyTransform() {
+    const container = document.querySelector('.container');
+    if (!container) return;
+    container.style.transform = `translateX(${panOffsetX}px) scale(${currentScale.toFixed(3)})`;
+    container.style.transformOrigin = 'center center';
+}
+
 // Плавное масштабирование под размер окна (для Telegram Mini App и узких окон)
 function fitToViewport() {
     const targetWidth = 510;
     const targetHeight = 560;
     const scaleX = window.innerWidth / targetWidth;
     const scaleY = window.innerHeight / targetHeight;
-    const scale = Math.min(scaleX, scaleY, 1);
-    document.documentElement.style.setProperty('--fit-scale', scale.toFixed(3));
-    const container = document.querySelector('.container');
-    if (container) {
-        container.style.transform = `scale(${scale.toFixed(3)})`;
-        container.style.transformOrigin = 'center top';
-    }
+    currentScale = Math.min(scaleX, scaleY, 1);
+    document.documentElement.style.setProperty('--fit-scale', currentScale.toFixed(3));
+    // При ресайзе сбрасываем pan, чтобы кошелек был по центру
+    panOffsetX = 0;
+    applyTransform();
 }
 
 window.addEventListener('load', fitToViewport);
@@ -282,3 +291,35 @@ window.addEventListener('resize', fitToViewport);
 if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.onEvent) {
     window.Telegram.WebApp.onEvent('viewportChanged', fitToViewport);
 }
+
+// === Свайп пальцем для горизонтального перемещения кошелька (если обрезается) ===
+let panStartX = 0;
+let panStartOffset = 0;
+let panStartY = 0;
+let panActive = false;
+
+document.addEventListener('touchstart', (e) => {
+    // Не перехватываем тач внутри полей ввода и кликабельных элементов
+    if (e.target.closest('input, select, button, a, .swap-icon-vertical')) return;
+    const t = e.touches[0];
+    panStartX = t.clientX;
+    panStartY = t.clientY;
+    panStartOffset = panOffsetX;
+    panActive = true;
+}, { passive: true });
+
+document.addEventListener('touchmove', (e) => {
+    if (!panActive) return;
+    const t = e.touches[0];
+    const dx = t.clientX - panStartX;
+    const dy = t.clientY - panStartY;
+    // Считаем жест горизонтальным, только если по X движемся больше чем по Y
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 10) {
+        panOffsetX = panStartOffset + dx;
+        applyTransform();
+    }
+}, { passive: true });
+
+document.addEventListener('touchend', () => {
+    panActive = false;
+}, { passive: true });

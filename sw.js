@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pantone-wallet-v4';
+const CACHE_NAME = 'pantone-wallet-v7';
 const ASSETS = [
   './',
   './index.html',
