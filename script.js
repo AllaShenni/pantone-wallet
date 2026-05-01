@@ -264,12 +264,17 @@ if (window.Telegram && window.Telegram.WebApp) {
 
 // Плавное масштабирование под размер окна (для Telegram Mini App и узких окон)
 function fitToViewport() {
-    const targetWidth = 510;   // ширина раскрытой структуры + отступы
-    const targetHeight = 560;  // высота карточки + отступы
+    const targetWidth = 510;
+    const targetHeight = 560;
     const scaleX = window.innerWidth / targetWidth;
     const scaleY = window.innerHeight / targetHeight;
     const scale = Math.min(scaleX, scaleY, 1);
     document.documentElement.style.setProperty('--fit-scale', scale.toFixed(3));
+    const container = document.querySelector('.container');
+    if (container) {
+        container.style.transform = `scale(${scale.toFixed(3)})`;
+        container.style.transformOrigin = 'center top';
+    }
 }
 
 window.addEventListener('load', fitToViewport);
