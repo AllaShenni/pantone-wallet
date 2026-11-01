@@ -273,10 +273,20 @@ function applyTransform() {
     container.style.transformOrigin = 'center center';
 }
 
+// Layout widths the scale must fit (px).
+// Desktop: open wallet = converter (300) + cover (340) = 640, plus margin.
+// Phone (< MOBILE_BREAKPOINT_PX): the cover slides aside, only the closed wallet width matters.
+// MOBILE_BREAKPOINT_PX must match the @media (max-width: 699px) rule in style.css.
+const MOBILE_BREAKPOINT_PX = 700;
+const DESKTOP_FIT_WIDTH_PX = 660;
+const PHONE_FIT_WIDTH_PX = 370;
+const FIT_HEIGHT_PX = 560;
+
 // Плавное масштабирование под размер окна (для Telegram Mini App и узких окон)
 function fitToViewport() {
-    const targetWidth = 510;
-    const targetHeight = 560;
+    const isPhone = window.innerWidth < MOBILE_BREAKPOINT_PX;
+    const targetWidth = isPhone ? PHONE_FIT_WIDTH_PX : DESKTOP_FIT_WIDTH_PX;
+    const targetHeight = FIT_HEIGHT_PX;
     const scaleX = window.innerWidth / targetWidth;
     const scaleY = window.innerHeight / targetHeight;
     currentScale = Math.min(scaleX, scaleY, 1);
