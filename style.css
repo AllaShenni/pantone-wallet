@@ -18,6 +18,15 @@
        Адаптация под мобильные через transform: scale ниже. */
 }
 
+/* Phones: when open, slide the cover almost off-screen so the converter
+   sits centered at full size; a strip of the cover stays visible on the right.
+   Must match MOBILE_BREAKPOINT_PX in script.js. */
+@media (max-width: 699px) {
+    :root {
+        --wallet-open-shift: 320px;
+    }
+}
+
 /* Контейнер с плавным масштабированием через JS-переменную --fit-scale.
    На больших экранах --fit-scale = 1 (без масштаба).
    На узких экранах JS вычисляет минимальный scale так,
